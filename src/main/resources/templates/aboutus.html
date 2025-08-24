@@ -1,0 +1,120 @@
+<html th:replace="~{base::layout(~{::main})}">
+
+<body>
+  <main>
+    <!-- Hero Section -->
+    <section class="position-relative" 
+             style="background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover; height: 250px;">
+      <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"></div>
+      <div class="container h-100 d-flex justify-content-center align-items-center text-center text-white">
+        <div>
+          <h1 class="fw-bold display-4 text-info">🌿 About Us</h1>
+          <p class="lead text-light">Who we are & what we stand for</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clients Section (Now at Top) -->
+    <section class="container py-5">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-6">
+          <h2 class="fw-bold text-success">🤝 Our Client</h2>
+          <p class="text-muted">
+          Over the years, we have had the privilege of collaborating with some of the most respected
+           organizations in the agricultural and allied industries. Our clients are not just 
+           business partners – they are valued members of our journey to transform farming into a 
+           more sustainable, innovative, and farmer-friendly ecosystem.
+          </p>
+          <p class="text-muted">
+            We take pride in these relationships and remain dedicated to building long-term 
+            collaborations that drive growth, innovation, and prosperity for farmers across India.
+          </p>
+          <a href="/contact" class="btn btn-success rounded-3 mt-2">Know more about Client</a>
+        </div>
+        <div class="col-lg-6">
+          <img src="/img/client.jpg" 
+               class="img-fluid rounded-4 shadow" alt="Our Team Working">
+        </div>
+      </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="container py-5">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-6">
+          <img src="/img/mying1.jpg" 
+               class="img-fluid rounded-4 shadow" alt="Our Team Working" style="height: 400px;">
+        </div>
+        <div class="col-lg-6">
+          <h2 class="fw-bold text-success">Our Story</h2>
+          <p class="text-muted">
+            We are a passionate team committed to empowering farmers and transforming agriculture 
+            with modern solutions. Our mission is to create a sustainable ecosystem where technology 
+            meets tradition.
+          </p>
+          <p class="text-muted">
+            Since our inception, we have worked with hundreds of farmers, providing tools, resources, 
+            and knowledge to help them grow and succeed.
+          </p>
+          <a href="/contact" class="btn btn-success rounded-3 mt-2">Get in Touch</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="container py-5">
+      <h2 class="fw-bold text-center mb-4">🌱 Our Core Values</h2>
+      <div class="row g-4 text-center">
+        <div class="col-md-4">
+          <div class="card shadow border-0 rounded-4 p-4">
+            <h4 class="fw-bold text-success"><i class="bi bi-tree-fill me-2"></i>Sustainability</h4>
+            <p class="text-muted">We prioritize eco-friendly and long-term farming solutions.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow border-0 rounded-4 p-4">
+            <h4 class="fw-bold text-success"><i class="bi bi-lightbulb-fill me-2"></i>Innovation</h4>
+            <p class="text-muted">Bringing the latest technologies to support modern agriculture.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow border-0 rounded-4 p-4">
+            <h4 class="fw-bold text-success"> <i class="bi bi-people-fill me-2"></i>Community</h4>
+            <p class="text-muted">Building strong farmer networks and empowering rural growth.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="container py-5">
+      <h2 class="fw-bold text-center mb-4">👨‍👩‍👧‍👦 Meet Our Team</h2>
+
+      <div class="row g-4 text-center">
+        <div class="col-md-4">
+          <div class="card shadow border-0 rounded-4 p-3">
+            <img src="/img/men1.webp" class="rounded-circle mb-3" width="120" height="120" alt="Team Member">
+            <h5 class="fw-bold">Rahul Sharma</h5>
+            <p class="text-muted">Founder & CEO</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow border-0 rounded-4 p-3">
+            <img src="/img/men2.webp" class="rounded-circle mb-3" width="120" height="120" alt="Team Member">
+            <h5 class="fw-bold">Priya Verma</h5>
+            <p class="text-muted">Head of Operations</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow border-0 rounded-4 p-3">
+            <img src="/img/men3.jpg" class="rounded-circle mb-3" width="120" height="120" alt="Team Member">
+            <h5 class="fw-bold">Amit Patel</h5>
+            <p class="text-muted">Tech Lead</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+</body>
+</html>

@@ -1,0 +1,322 @@
+<html th:replace="~{Merchant/Merchantbase::layout(~{::section})}">
+<section>
+  <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <div class="row g-0">
+          
+          <!-- Product Image -->
+          <div class="col-md-5 bg-light d-flex align-items-center justify-content-center">
+            <img th:src="@{'/ProductImage/' + ${product.productImage}}" 
+                 class="img-fluid p-2 rounded-3 hover-zoom" 
+                 alt="Product Image" 
+                 style="max-height: 500px;" />
+          </div>
+          
+          <!-- Product Details -->
+          <div class="col-md-7 bg-white">
+            <div class="card-body p-4">
+              
+              <!-- Title -->
+              <h2 class="card-title fw-bold text-dark mb-3">
+                <span th:text="${product.productName}">Product Name</span>
+              </h2>
+              
+              <!-- Category & Status -->
+              <div class="mb-3">
+                <span class="badge bg-secondary text-white px-3 py-2 me-2" th:text="${product.category}">Category</span>
+                <span class="badge bg-success px-3 py-2 text-white" 
+                      th:if="${product.status.name() == 'AVAILABLE'}" 
+                      th:text="${product.status}">Available</span>
+                <span class="badge bg-danger px-3 py-2 text-white" 
+                      th:if="${product.status.name() != 'AVAILABLE'}" 
+                      th:text="${product.status}">Unavailable</span>
+              </div>
+
+              <!-- Product Info -->
+              <p class="fs-5 text-muted mb-1">
+                💰 <strong>Price per Unit:</strong> ₹ 
+                <span id="unitPrice" th:text="${product.pricePerUnit}"></span>
+              </p>
+              <p class="fs-6 mb-1">
+                📦 <strong>Available Quantity:</strong> 
+                <span th:text="${product.quantity}"></span>
+              </p>
+
+              <hr>
+
+              <!-- Seller Info -->
+              <p class="mb-1"><strong>👨‍🌾 Sold by:</strong> <span th:text="${product.farmer.name}"></span></p>
+              <p class="mb-1"><strong>📞 Contact:</strong> <span th:text="${product.farmer.contactNumber}"></span></p>
+              <p class="mb-3"><strong>📍 Location:</strong> <span th:text="${product.farmer.address}"></span></p>
+
+              <!-- Purchase Form -->
+              <form th:if="${product.status.name() == 'AVAILABLE' }" id="buyForm" onsubmit="event.preventDefault(); startPayment();">
+                <div class="input-group mb-3">
+                  <input type="hidden" id="productId" name="productId" th:value="${product.id}" />
+                  <input type="number" id="buyQty" name="buyQuantity" 
+                         min="1" th:attr="max=${product.quantity}" 
+                         class="form-control shadow-sm" 
+                         placeholder="Enter quantity" required />
+                  <button type="submit" class="btn btn-success shadow-sm fw-semibold">
+                    🛒 Confirm Purchase
+                  </button>
+                </div>
+                <div id="totalCost" class="alert alert-info d-none mt-2 rounded-3 shadow-sm">
+                  💰 <strong>Total Price :</strong> ₹ 
+                  <span id="totalAmount">0</span>
+                </div>
+              </form>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- Back Button -->
+      <div class="mt-4 text-center">
+        <a th:href="@{Dashboard}" class="btn btn-outline-primary px-4 py-2 shadow-sm rounded-pill">
+          ⬅️ Back to Products
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hover Zoom Effect -->
+<style>
+  .hover-zoom {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-zoom:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+</style>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+function startPayment() {
+    const qty = parseInt(document.getElementById("buyQty").value);
+    const productId = document.getElementById("productId").value;
+
+    if (isNaN(qty) || qty <= 0) {
+        alert("Please enter a valid quantity.");
+        return;
+    }
+
+    fetch(`/Merchant/create-order?productId=${productId}&quantity=${qty}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert("Error: " + data.error);
+                return;
+            }
+			const options = {
+                key: data.razorpayKeyId,
+                amount: data.amount,
+                currency: data.currency,
+                name: "Softpro India",
+                description: "Product Purchase",
+                order_id: data.orderId,
+                handler: function (response) {
+                    const form = document.createElement("form");
+                    form.method = "post";
+                    form.action = "verify_payment";
+
+                    form.innerHTML = `
+                        <input type="hidden" name="paymentId" value="${response.razorpay_payment_id}" />
+                        <input type="hidden" name="orderId" value="${response.razorpay_order_id}" />
+                        <input type="hidden" name="signature" value="${response.razorpay_signature}" />
+                        <input type="hidden" name="productId" value="${productId}" />
+                        <input type="hidden" name="buyQuantity" value="${qty}" />
+                    `;
+                    document.body.appendChild(form);
+                    form.submit();
+                },
+                prefill: {
+                    name: "[[${session.loggedInMerchant.name}]]",
+                    email: "[[${session.loggedInMerchant.email}]]"
+                },
+                theme: {
+                    color: "#3399cc"
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+        });
+}
+</script>
+	
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  		<script th:if="${msg}">
+  		async function generateReceiptPDF() {
+  		  const { jsPDF } = window.jspdf;
+  		  const doc = new jsPDF();
+
+  		  // Replace templated placeholders safely, fallback to defaults
+  		  const product = "[[${product.productName}]]" || "Unknown Product";
+  		  const quantity = parseFloat("[[${quantity}]]") || 0;
+  		  const pricePerUnit = parseFloat("[[${product.pricePerUnit}]]") || 0;
+
+  		  const transactionId = "[[${transactionId}]]" || "N/A";
+
+  		  const seller = {
+  		    name: "[[${product.farmer.name}]]" || "Unknown Seller",
+  		    contact: "[[${product.farmer.contactNumber}]]" || "N/A",
+  		    location: "[[${product.farmer.address}]]" || "N/A"
+  		  };
+  		  const buyer = {
+  		    name: "[[${session.loggedInMerchant.name}]]" || "Unknown Buyer",
+  		    email: "[[${session.loggedInMerchant.email}]]" || "N/A"
+  		  };
+
+  		  const totalAmount = quantity * pricePerUnit;
+  		  const paymentDate = new Date().toLocaleString();
+  		  const rupee = "\u20B9"; // Rupee symbol
+
+  		  // Header background color
+  		  doc.setFillColor(34, 139, 34); // forest green
+  		  doc.rect(0, 0, 210, 30, 'F');
+
+  		  // Header text
+  		  doc.setTextColor(255, 255, 255); // white
+  		  doc.setFontSize(20);
+  		  doc.setFont("helvetica", "bold");
+  		  doc.text("AGRITRADE HUB", 105, 15, { align: "center" });
+  		  doc.setFontSize(12);
+  		  doc.text("Official Purchase Receipt", 105, 23, { align: "center" });
+
+  		  // Reset text color for body
+  		  doc.setTextColor(0, 0, 0);
+  		  doc.setFontSize(12);
+  		  doc.setFont("helvetica", "normal");
+
+  		  let y = 40;
+  		  const lineHeight = 10;
+
+  		  // Draw a box for product details
+  		  doc.setDrawColor(34, 139, 34);
+  		  doc.setLineWidth(0.8);
+  		  doc.rect(15, y - 8, 180, 75); // x, y, width, height
+
+  		  // Product Info
+  		  doc.setFont("helvetica", "bold");
+  		  doc.text("Product Details:", 20, y);
+  		  doc.setFont("helvetica", "normal");
+  		  y += lineHeight;
+  		  doc.text(`Name          : ${product}`, 20, y);
+  		  y += lineHeight;
+  		  doc.text(`Quantity      : ${quantity}`, 20, y);
+  		  y += lineHeight;
+  		  doc.text(`Price/Unit    : ${pricePerUnit.toFixed(2)} Rs.`, 20, y);
+  		  y += lineHeight;
+  		  doc.text(`Total Amount  : ${totalAmount.toFixed(2)} Rs.`, 20, y);
+  		  y += lineHeight;
+  		  doc.text(`Transaction ID: ${transactionId}`, 20, y);
+  		  y += lineHeight;
+  		  doc.text(`Payment Date  : ${paymentDate}`, 20, y);
+
+  		  // Seller Info Box
+  		  y += 20;
+  		  /* doc.setDrawColor(70, 130, 180); // steelblue
+  		   */doc.rect(15, y - 8, 85, 50);
+
+  		  doc.setFont("helvetica", "bold");
+  		  doc.text("Seller Details:", 20, y);
+  		  doc.setFont("helvetica", "normal");
+  		  y += lineHeight;
+  		  doc.text(`Name     : ${seller.name}`, 20, y);
+  		  y += lineHeight;
+  		  doc.text(`Contact  : ${seller.contact}`, 20, y);
+  		  y += lineHeight;
+  		  doc.text(`Location : ${seller.location}`, 20, y);
+
+  		  // Buyer Info Box
+  		  y -= 30;
+  		  /* doc.setDrawColor(255, 140, 0);*/ // dark orange
+  		  doc.rect(110, y - 8, 85, 50);
+ 
+  		  doc.setFont("helvetica", "bold");
+  		  doc.text("Buyer Details:", 115, y);
+  		  doc.setFont("helvetica", "normal");
+  		  y += lineHeight;
+  		  doc.text(`Name  : ${buyer.name}`, 115, y);
+  		  y += lineHeight;
+  		  doc.text(`Email : ${buyer.email}`, 115, y);
+
+  		  // Footer line and thank you message
+  		  doc.setDrawColor(0);
+  		  doc.setLineWidth(0.5);
+  		  doc.line(15, 240, 195, 240);
+
+  		  doc.setFont("helvetica", "italic");
+  		  doc.setFontSize(14);
+  		  doc.setTextColor(34, 139, 34);
+  		  doc.text("Thank you for shopping with Agritrade Hub!", 105, 255, { align: "center" });
+
+  		  // Save PDF
+  		  doc.save(`Receipt_${transactionId}.pdf`);
+  		}
+  		
+    Swal.fire({
+        title: 'Order Placed!',
+        text: 'Order placed and payment initiated successfully.',
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonText: 'Download Receipt',
+        cancelButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#aaa'
+    }).then((result) => {
+        if (result.isConfirmed) {
+        	generateReceiptPDF();
+        }
+    });
+</script>
+  	
+  	
+ <script>
+    const qtyInput = document.getElementById("buyQty");
+    const pricePerUnit = parseFloat(document.getElementById("unitPrice").innerText);
+    const totalDiv = document.getElementById("totalCost");
+    const totalAmount = document.getElementById("totalAmount");
+
+    qtyInput.addEventListener("input", function () {
+      const qty = parseInt(this.value);
+      if (!isNaN(qty) && qty > 0) {
+        const total = pricePerUnit * qty;
+        totalAmount.innerText = total.toFixed(2);
+        totalDiv.classList.remove("d-none");
+      } else {
+        totalDiv.classList.add("d-none");
+      }
+    });
+  </script>
+  
+  
+  	<input type="hidden" id="msg" th:if="${error}" th:value="${error}">
+<script>
+	var msg = document.getElementById("msg");
+	if(msg!=null && msg!="")
+	{
+		alert(msg.value);	
+	}
+
+  function validateQty(input) {
+    const maxQty = parseInt(input.getAttribute('max'));
+    const minQty = parseInt(input.getAttribute('min'));
+    const currentVal = parseInt(input.value);
+
+    if (isNaN(currentVal) || currentVal < minQty || currentVal > maxQty) {
+      input.setCustomValidity("Please enter a quantity between " + minQty + " and " + maxQty + ".");
+    } else {
+      input.setCustomValidity("");
+    }
+  }
+</script>
+  		
+</section>
+</html>

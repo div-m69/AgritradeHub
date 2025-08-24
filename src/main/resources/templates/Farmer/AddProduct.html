@@ -1,0 +1,52 @@
+<html th:replace="~{Farmer/Farmerbase::layout(~{::main})}">
+	<body>
+		<main>
+			<div class="row">
+				<div class="col-sm-10 mx-auto">
+					<div class="card">
+						<div class="card-header bg-success">
+							<h4 class="text-center text-white fw-bold m-0">Add product</h4>
+						</div>
+						<div class="card-body">
+							<form method="post" enctype="multipart/form-data" th:object="${product}">
+								<div class="row">
+									<div class="col-sm-6">
+										<label class="fw-bold">Enter product name</label>
+										<input th:field="${product.productName}" type="text" class="form-control" placeholder="productName....">
+									</div>
+									<div class="col-sm-6">
+										<label class="fw-bold">Enter product price</label>
+										<input th:field="${product.pricePerUnit}" type="number" class="form-control" placeholder="product price....">
+									</div>
+									
+									<div class="col-sm-6 mt-3">
+										<label class="fw-bold">Enter product quantity(in KG)</label>
+										<input th:field="${product.quantity}" type="number" class="form-control" placeholder="product quantity....">
+									</div>
+									
+									<div class="col-sm-6 mt-3">
+										<label class="fw-bold">Enter product Category</label>
+										<select th:field="${product.category}" class="form-control">
+											<option value="">----product Category-----</option>
+											<option th:each="cate : ${categories}" th:value="${cate.categoryName}" th:text="${cate.categoryName}">       
+										</select>
+									</div>
+									
+									<div class="col-sm-12 mt-3">
+										<label class="fw-bold">Enter product image</label>
+										<input name="ImageFile" accept=".jpg, .jpeg, .png, .webp" type="file" class="form-control" required placeholder="product quantity....">
+									</div>
+											
+									<div class="text-center mt-5 w-100">
+										<button type="submit" class="btn btn-success">Add product</button>
+									</div> 							
+									
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</body>
+</html>

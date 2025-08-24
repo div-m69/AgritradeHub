@@ -1,0 +1,100 @@
+<html th:replace="~{base::layout(~{::main})}">
+
+<body>
+  <main>
+    <!-- Hero Section -->
+    <section class="position-relative" 
+             style="background: url('/img/contact-bg.jpg') no-repeat center center/cover; height: 150px;">
+      <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"></div>
+      <div class="container h-100 d-flex justify-content-center align-items-center text-center text-white">
+        <div>
+          <h1 class="fw-bold display-4 text-info">📞 Contact Us</h1>
+          <p class="lead text-danger">We’d love to hear from you. Get in touch today!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="container py-5">
+      <div class="row g-4">
+        <!-- Contact Form -->
+        <div class="col-lg-7">
+          <div class="card shadow border-0 rounded-4">
+            <div class="card-body p-4">
+              <h3 class="fw-bold mb-3 text-success">Send us an Enquiry</h3>
+              <form method="post" th:object="${enq}">
+                <!-- Name & Contact -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="fw-bold">Your Name</label>
+                    <input th:field="${enq.name}" type="text" class="form-control rounded-3" required placeholder="Enter your name">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="fw-bold">Contact Number</label>
+                    <input th:field="${enq.contactNumber}" type="text" class="form-control rounded-3" required placeholder="Enter your contact number">
+                  </div>
+                </div>
+
+                <!-- Email & Subject -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="fw-bold">Your Email</label>
+                    <input th:field="${enq.email}" type="email" class="form-control rounded-3" required placeholder="Enter your email">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="fw-bold">Subject</label>
+                    <select th:field="*{subject}" class="form-control rounded-3" required>
+                      <option value="" disabled selected>-- Select Subject --</option>
+                      <option value="General Enquiry">General Enquiry</option>
+                      <option value="Support">Support</option>
+                      <option value="Feedback">Feedback</option>
+                      <option value="Business">Business</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Address -->
+                <div class="mb-3">
+                  <label class="fw-bold">Address</label>
+                  <input th:field="${enq.address}" type="text" class="form-control rounded-3" placeholder="Enter your address">
+                </div>
+
+                <!-- Message -->
+                <div class="mb-3">
+                  <label class="fw-bold">Message</label>
+                  <textarea th:field="${enq.message}" rows="4" class="form-control rounded-3" required placeholder="Write your message here..."></textarea>
+                </div>
+
+                <!-- Button -->
+                <button type="submit" class="btn btn-success w-100 rounded-3">Send Message</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="col-lg-5">
+          <div class="card shadow border-0 rounded-4">
+            <div class="card-body p-4">
+              <h3 class="fw-bold mb-3 text-success">Get in Touch</h3>
+              <p class="mb-2"><i class="bi bi-geo-alt-fill text-success"></i> 123 Green Street, Lucknow, India</p>
+              <p class="mb-2"><i class="bi bi-envelope-fill text-success"></i> support@mywebsite.com</p>
+              <p class="mb-2"><i class="bi bi-telephone-fill text-success"></i> +91 98765 43210</p>
+              <hr>
+              <h5 class="fw-bold">Follow Us</h5>
+              <a href="https://www.facebook.com/" class="text-success me-3 fs-4"><i class="bi bi-facebook"></i></a>
+              <a href="https://x.com/" class="text-success me-3 fs-4"><i class="bi bi-twitter"></i></a>
+              <a href="https://www.instagram.com/" class="text-success me-3 fs-4"><i class="bi bi-instagram"></i></a>
+              <a href="https://www.linkedin.com/feed/" class="text-success fs-4"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+</body>
+</html>

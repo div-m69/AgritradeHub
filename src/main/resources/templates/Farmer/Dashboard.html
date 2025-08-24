@@ -1,0 +1,139 @@
+<html th:replace="~{Farmer/Farmerbase::layout(~{::section})}">
+<head></head>
+
+<body>
+	<section>
+		<div class="row">
+			<h4 class="text-center mb-4 px-4">Welcome, <span th:text="${session.loggedInFarmer.name}"></span>!</h4>
+		</div>
+
+<!-- Summary Cards -->
+<div class="row g-4">
+	<!-- Total Revenue -->
+	<div class="col-md-3 mb-3">
+		<div class="card shadow h-100 border-0 bg-success text-white rounded-4">
+			<div class="card-body text-center">
+				<i class="bi bi-currency-rupee fs-1"></i>
+				<h5 class="card-title mt-3">Sold Product Revenue</h5>
+				<p class="card-text">₹ <span class="fs-4 fw-bold" th:text="${totalRevenue}">0</span></p>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Revenue This Month -->
+	<div class="col-md-3 mb-3">
+		<div class="card shadow h-100 border-0 bg-primary text-white rounded-4">
+			<div class="card-body text-center">
+				<i class="bi bi-calendar-week fs-1"></i>
+				<h5 class="card-title mt-3 text-white">Revenue This Month</h5>
+				<p class="card-text text-warning">₹ <span class="fs-4 fw-bold" th:text="${monthlyRevenue}">0</span></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-3 mb-3">
+		<div class="card shadow-sm border-0 text-white bg-gradient bg-warning rounded-4 h-100">
+			<div class="card-body text-center">
+				<i class="bi bi-box-seam fs-1"></i>
+				<h5 class="card-title mt-2">In-Stock Revenue</h5>
+				<p class="card-text fs-4">₹ <span th:text="${inStockRevenue}">0</span></p>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Top Selling Product -->
+	<div class="col-md-3 mb-3">
+		<div class="card shadow h-100 border-0 bg-secondary text-white rounded-4">
+			<div class="card-body text-center">
+				<i class="bi bi-star-fill fs-1"></i>
+				<h5 class="card-title mt-3 text-white">Top Selling Product</h5>
+				<p class="card-text fs-5 text-danger" th:text="${topProduct}">N/A</p>
+			</div>
+		</div>
+	</div>
+
+	
+	<!-- My Products -->
+	<div class="col-md-3">
+		<div class="card shadow h-100 border-0 bg-light rounded-4">
+			<div class="card-body text-center">
+				<i class="bi bi-box-seam fs-1 text-success"></i>
+				<h5 class="card-title mt-3">My Products</h5>
+				<p class="card-text text-muted">Total uploaded by you</p>
+				<h3 class="text-success fw-bold" th:text="${totalProducts}">0</h3>
+			</div>
+		</div>
+	</div>
+
+	<!-- Total Orders -->
+	<div class="col-md-3">
+		<div class="card shadow h-100 border-0 bg-light rounded-4">
+			<div class="card-body text-center">
+				<i class="bi bi-bag-check fs-1 text-primary"></i>
+				<h5 class="card-title mt-3">Total Orders</h5>
+				<p class="card-text text-muted">All received orders</p>
+				<h3 class="text-primary fw-bold" th:text="${totalOrders}">0</h3>
+			</div>
+		</div>
+	</div>
+
+	<!-- Completed Orders -->
+	<div class="col-md-3">
+		<div class="card shadow h-100 border-0 bg-light rounded-4">
+			<div class="card-body text-center">
+				<i class="bi bi-check-circle fs-1 text-info"></i>
+				<h5 class="card-title mt-3">Completed Orders</h5>
+				<p class="card-text text-muted">Successfully delivered</p>
+				<h3 class="text-info fw-bold" th:text="${completedOrders}">0</h3>
+			</div>
+		</div>
+	</div>
+
+	<!-- Cancelled Orders -->
+	<div class="col-md-3">
+		<div class="card shadow h-100 border-0 bg-light rounded-4">
+			<div class="card-body text-center">
+				<i class="bi bi-x-circle fs-1 text-danger"></i>
+				<h5 class="card-title mt-3">Cancelled Orders</h5>
+				<p class="card-text text-muted">Orders not completed</p>
+				<h3 class="text-danger fw-bold" th:text="${cancelledOrders}">0</h3>
+			</div>
+		</div>
+	</div>
+</div>
+			
+			<!-- <!-- Recent Orders Table -->
+			<div class="mt-5">
+				<h4>Recent Orders</h4>
+				<table class="table table-bordered table-striped">
+					<thead class="table-secondary">
+						<tr>
+							<th>#</th>
+							<th>Product</th>
+							<th>Quantity</th>
+							<th>Merchant</th>
+							<th>Status</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="order, iStat : ${recentOrders}">
+							<td th:text="${iStat.index + 1}">1</td>
+							<td th:text="${order.productName}">Wheat</td>
+							<td th:text="${order.quantity}">20</td>
+							<td th:text="${order.merchant.name}">Raj Merchant</td>
+							<td><span class="badge text-white"
+								th:classappend="${order.orderStatus.name() == 'DELIVERED'} ? 'bg-success' :
+                          (${order.orderStatus.name() == 'CANCELLED'} ? 'bg-danger' : 'bg-warning')"
+								th:text="${order.orderStatus}"> </span></td>
+
+							<td
+								th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm' )}">
+								12 Apr 2025 14:30</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	</section>
+</body>
+</html>

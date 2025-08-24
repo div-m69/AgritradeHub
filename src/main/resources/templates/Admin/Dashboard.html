@@ -1,0 +1,176 @@
+<html th:replace="~{Admin/Adminbase::layout(~{::main})}">
+  <body>
+    <main class="container-fluid py-4 bg-light">
+
+      <!-- Dashboard Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-success">
+          <i class="bi bi-speedometer2 me-2"></i> Admin Dashboard
+        </h2>
+        <span class="text-muted">Welcome, Admin</span>
+      </div>
+
+      <!-- Quick Stats Cards -->
+      <div class="row g-4 mb-4">
+        <!-- Farmers -->
+        <div class="col-md-4 col-lg-2">
+          <div class="card shadow-sm border-0 rounded-3 text-center p-3 stat-card">
+            <i class="bi bi-person-lines-fill text-success fs-2 mb-2"></i>
+            <h6 class="fw-bold">Farmers</h6>
+            <h4 th:text="${farmerCount}">0</h4>
+          </div>
+        </div>
+
+        <!-- Merchants -->
+        <div class="col-md-4 col-lg-2">
+          <div class="card shadow-sm border-0 rounded-3 text-center p-3 stat-card">
+            <i class="bi bi-briefcase-fill text-primary fs-2 mb-2"></i>
+            <h6 class="fw-bold">Merchants</h6>
+            <h4 th:text="${merchantCount}">0</h4>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div class="col-md-4 col-lg-2">
+          <div class="card shadow-sm border-0 rounded-3 text-center p-3 stat-card">
+            <i class="bi bi-box-seam text-warning fs-2 mb-2"></i>
+            <h6 class="fw-bold">Products</h6>
+            <h4 th:text="${productCount}">0</h4>
+          </div>
+        </div>
+
+        <!-- Orders -->
+        <div class="col-md-4 col-lg-2">
+          <div class="card shadow-sm border-0 rounded-3 text-center p-3 stat-card">
+            <i class="bi bi-cart-check-fill text-danger fs-2 mb-2"></i>
+            <h6 class="fw-bold">Orders</h6>
+            <h4 th:text="${orderCount}">0</h4>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="col-md-4 col-lg-2">
+          <div class="card shadow-sm border-0 rounded-3 text-center p-3 stat-card">
+            <i class="bi bi-tags-fill text-info fs-2 mb-2"></i>
+            <h6 class="fw-bold">Categories</h6>
+            <h4 th:text="${categoryCount}">0</h4>
+          </div>
+        </div>
+
+        <!-- Enquiries -->
+        <div class="col-md-4 col-lg-2">
+          <div class="card shadow-sm border-0 rounded-3 text-center p-3 stat-card">
+            <i class="bi bi-envelope-fill text-secondary fs-2 mb-2"></i>
+            <h6 class="fw-bold">Enquiries</h6>
+            <h4 th:text="${enquiryCount}">0</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders Status Cards -->
+      <div class="row g-4 mb-4">
+        <!-- Cancelled Orders -->
+        <div class="col-md-4 col-lg-4">
+          <div class="card shadow-sm border-0 rounded-3 text-center p-3 stat-card">
+            <i class="bi bi-x-octagon-fill text-danger fs-2 mb-2"></i>
+            <h6 class="fw-bold">Cancelled Orders</h6>
+            <h4 th:text="${cancelledOrders}">0</h4>
+          </div>
+        </div>
+
+        <!-- Confirmed Orders -->
+        <div class="col-md-4 col-lg-4">
+          <div class="card shadow-sm border-0 rounded-3 text-center p-3 stat-card">
+            <i class="bi bi-check-circle-fill text-warning fs-2 mb-2"></i>
+            <h6 class="fw-bold">Pending Orders</h6>
+            <h4 th:text="${confirmedOrders}">0</h4>
+          </div>
+        </div>
+
+        <!-- Delivered Orders -->
+        <div class="col-md-4 col-lg-4">
+          <div class="card shadow-sm border-0 rounded-3 text-center p-3 stat-card">
+            <i class="bi bi-truck text-primary fs-2 mb-2"></i>
+            <h6 class="fw-bold">Delivered Orders</h6>
+            <h4 th:text="${deliveredOrders}">0</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts + Recent Activity -->
+      <div class="row g-4">
+        
+        <!-- Orders Overview Chart -->
+        <div class="col-lg-8">
+          <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-success text-white fw-bold">
+              <i class="bi bi-bar-chart-fill me-2"></i> Orders Overview
+            </div>
+            <div class="card-body">
+              <canvas id="ordersChart" height="150"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Enquiries -->
+        <div class="col-lg-4">
+          <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-info text-white fw-bold">
+              <i class="bi bi-chat-dots-fill me-2"></i> Recent Enquiries
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+                <li class="list-group-item" th:each="enq : ${recentEnquiries}">
+                  <strong th:text="${enq.name}">Name</strong> 
+                  <small class="text-muted d-block" th:text="${#temporals.format(enq.enquiryDate, 'dd MMM yyyy')}">Date</small>
+                  <span class="text-truncate d-block" style="max-width: 220px;" th:text="${enq.message}">Message</span>
+                </li>
+              </ul>
+              <div class="text-center mt-2">
+                <a th:href="@{Enquiry}" class="btn btn-outline-success btn-sm">View All</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart.js -->
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script th:inline="javascript">
+		const ctx = document.getElementById('ordersChart');
+		const orderMonths = [[${orderMonths}]];
+		const orderCounts = [[${orderCounts}]];
+		
+		new Chart(ctx, {
+		  type: 'line',
+		  data: {
+		    labels: orderMonths,
+		    datasets: [{
+		      label: 'Orders',
+		      data: orderCounts,
+		      borderColor: 'green',
+		      backgroundColor: 'rgba(0, 128, 0, 0.1)',
+		      borderWidth: 2,
+		      tension: 0.3,
+		      fill: true,
+		      pointRadius: 5
+		    }]
+		  }
+		});
+		</script>
+
+
+      <!-- Hover & Animation Styles -->
+      <style>
+        .stat-card {
+          transition: transform 0.2s, box-shadow 0.2s;
+          cursor: pointer;
+        }
+        .stat-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+      </style>
+    </main>
+  </body>
+</html>

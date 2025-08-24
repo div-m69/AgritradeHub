@@ -1,0 +1,563 @@
+<html th:replace="~{base::layout(~{::main})}">
+<body>
+<main>
+   
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #1a5d1a;
+            --light-green: #4caf50;
+            --accent-orange: #ff8c00;
+            --dark-green: #0f3a0f;
+            --cream: #f8f9fa;
+            --text-dark: #2c3e50;
+            --text-light: #6c757d;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--cream);
+        }
+
+        /* Header Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+            color: var(--white);
+            padding: 120px 0 80px;
+            position: relative;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle fill="rgba(255,255,255,0.05)" cx="20" cy="20" r="2"/><circle fill="rgba(255,255,255,0.05)" cx="80" cy="40" r="1.5"/><circle fill="rgba(255,255,255,0.05)" cx="40" cy="80" r="1"/></svg>');
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+
+        .breadcrumb-nav {
+            background: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            padding: 12px 24px;
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+        }
+
+        .breadcrumb-nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-nav a:hover {
+            color: var(--accent-orange);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 100px 0;
+            background: var(--white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--accent-orange);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 650px;
+            margin: 20px auto 0;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            border: 1px solid #e9ecef;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--light-green), var(--accent-orange));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 1.8rem;
+            color: var(--white);
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+        }
+
+        .service-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .service-description {
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .service-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-features li {
+            padding: 8px 0;
+            color: var(--text-dark);
+            position: relative;
+            padding-left: 25px;
+            font-size: 0.95rem;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            color: var(--light-green);
+            font-weight: bold;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--cream) 0%, #e8f5e8 100%);
+            padding: 80px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--light-green);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: var(--accent-orange);
+            color: var(--white);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1.1rem;
+        }
+
+        .cta-button:hover {
+            background: #e67c00;
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,140,0,0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .service-card {
+                padding: 30px 25px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .cta-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-section {
+                padding: 100px 0 60px;
+            }
+            
+            .services-section {
+                padding: 80px 0;
+            }
+        }
+    </style>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Our Premium Services</h1>
+                <p class="hero-subtitle">Comprehensive solutions connecting farmers and merchants for agricultural success</p>
+                <nav class="breadcrumb-nav">
+                    <a href="/" class="me-2">
+                        <i class="fas fa-home me-1"></i>Home
+                    </a>
+                    <span class="text-white-50 mx-2">/</span>
+                    <span>Services</span>
+                </nav>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What AgritradeHub Offers</h2>
+                <p class="section-subtitle">Discover our comprehensive agricultural services designed to connect farmers with merchants and boost your agricultural business success</p>
+            </div>
+
+            <div class="services-grid">
+                <!-- Crop Trading Platform -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="service-title">Crop Trading Platform</h3>
+                    <p class="service-description">Direct connection between farmers and merchants for transparent, fair-price crop trading with real-time market updates.</p>
+                    <ul class="service-features">
+                        <li>Direct farmer-merchant connections</li>
+                        <li>Real-time price negotiations</li>
+                        <li>Secure payment processing</li>
+                        <li>Quality verification system</li>
+                        <li>Contract farming options</li>
+                    </ul>
+                </div>
+
+                <!-- Market Intelligence -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h3 class="service-title">Market Intelligence</h3>
+                    <p class="service-description">Advanced analytics and market insights to help make informed decisions about crop pricing and market trends.</p>
+                    <ul class="service-features">
+                        <li>Live market price tracking</li>
+                        <li>Demand-supply analytics</li>
+                        <li>Seasonal trend predictions</li>
+                        <li>Regional market reports</li>
+                        <li>Competition analysis</li>
+                    </ul>
+                </div>
+
+                <!-- Supply Chain Management -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-truck-fast"></i>
+                    </div>
+                    <h3 class="service-title">Supply Chain Solutions</h3>
+                    <p class="service-description">End-to-end logistics support ensuring your produce reaches markets efficiently with minimal wastage.</p>
+                    <ul class="service-features">
+                        <li>Transportation coordination</li>
+                        <li>Cold storage network</li>
+                        <li>Packaging solutions</li>
+                        <li>Route optimization</li>
+                        <li>Delivery tracking</li>
+                    </ul>
+                </div>
+
+                <!-- Digital Marketplace -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h3 class="service-title">Digital Marketplace</h3>
+                    <p class="service-description">Online platform for showcasing crops, connecting with buyers, and managing orders efficiently.</p>
+                    <ul class="service-features">
+                        <li>Product catalog management</li>
+                        <li>Buyer discovery tools</li>
+                        <li>Order management system</li>
+                        <li>Digital contracts</li>
+                        <li>Review and rating system</li>
+                    </ul>
+                </div>
+
+                <!-- Financial Services -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3 class="service-title">Financial Services</h3>
+                    <p class="service-description">Comprehensive financial solutions including payments, credit, and insurance tailored for agricultural businesses.</p>
+                    <ul class="service-features">
+                        <li>Quick payment processing</li>
+                        <li>Credit facilities</li>
+                        <li>Crop insurance</li>
+                        <li>Financial planning</li>
+                        <li>Risk management</li>
+                    </ul>
+                </div>
+
+                <!-- Support & Training -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="service-title">Support & Training</h3>
+                    <p class="service-description">Educational programs and 24/7 support to help farmers and merchants succeed in the digital marketplace.</p>
+                    <ul class="service-features">
+                        <li>Platform training programs</li>
+                        <li>Market education workshops</li>
+                        <li>24/7 customer support</li>
+                        <li>Technical assistance</li>
+                        <li>Best practices sharing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+     
+     <!-- Registration Section -->
+<section class="registration-section py-5" style="background: var(--white); border-bottom: 1px solid #e9ecef;">
+    <div class="container text-center">
+        <h2 class="mb-4" style="color:var(--primary-green);font-weight:700;">Register With Us</h2>
+        <p class="mb-5" style="color:var(--text-light);font-size:1.1rem;">
+            Join AgritradeHub as a Farmer or Merchant to unlock powerful features and grow your business.
+        </p>
+        <div class="d-flex flex-column flex-md-row justify-content-center gap-4">
+            <a href="/FormerRegistration" class="btn btn-success btn-lg px-5" style="font-weight:600;">
+                <i class="fas fa-tractor me-2"></i>Farmer Registration
+            </a>
+            <a href="/MerchantRegistration" class="btn btn-warning btn-lg px-5" style="font-weight:600;color:#fff;">
+                <i class="fas fa-store me-2"></i>Merchant Registration
+            </a>
+        </div>
+    </div>
+</section>
+     
+
+    <!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; text-align: center;">
+      
+      <div class="stat-item">
+        <span class="stat-number" style="font-size: 2.5rem; font-weight: 700; color: #4caf50; display: block; margin-bottom: 10px;">
+          <i class="bi bi-people-fill me-2"></i> 50000+
+        </span>
+        <div class="stat-label" style="font-weight: 500; color: #2c3e50;">Active Farmers</div>
+      </div>
+      
+      <div class="stat-item">
+        <span class="stat-number" style="font-size: 2.5rem; font-weight: 700; color: #4caf50; display: block; margin-bottom: 10px;">
+          <i class="bi bi-shop-window me-2"></i> 5000+
+        </span>
+        <div class="stat-label" style="font-weight: 500; color: #2c3e50;">Registered Merchants</div>
+      </div>
+      
+      <div class="stat-item">
+        <span class="stat-number" style="font-size: 2.5rem; font-weight: 700; color: #4caf50; display: block; margin-bottom: 10px;">
+          <i class="bi bi-currency-rupee me-2"></i> ₹100Cr+
+        </span>
+        <div class="stat-label" style="font-weight: 500; color: #2c3e50;">Trade Volume</div>
+      </div>
+      
+      <div class="stat-item">
+        <span class="stat-number" style="font-size: 2.5rem; font-weight: 700; color: #4caf50; display: block; margin-bottom: 10px;">
+          <i class="bi bi-clock-history me-2"></i> 24/7
+        </span>
+        <div class="stat-label" style="font-weight: 500; color: #2c3e50;">Support Available</div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Ready to Transform Your Agricultural Business?</h2>
+            <p class="cta-subtitle">Join thousands of successful farmers and merchants who trust AgritradeHub for their agricultural trading needs</p>
+            <a href="/Login" class="cta-button">
+                <i class="fas fa-rocket me-2"></i>Get Started Today
+            </a>
+        </div>
+    </section>
+
+<!-- Font Awesome CSS -->
+
+
+
+</main>
+</body>
+</html>

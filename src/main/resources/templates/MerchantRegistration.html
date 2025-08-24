@@ -1,0 +1,172 @@
+<html th:replace="~{base::layout(~{::main})}">
+<body>
+<main>
+  <!-- Background Section -->
+  <div class="position-relative" 
+       style="background-image: url('/img/hero_4.jpg'); 
+              background-size: cover; 
+              background-position: center; 
+              min-height: 800px;">
+
+    <!-- Dark overlay with blur -->
+    <div class="position-absolute top-0 start-0 w-100 h-100  bg-opacity-75"></div>
+
+    <!-- Centered Form with Info Section -->
+    <div class="container d-flex justify-content-center align-items-start px-0" style="padding-top: 20px; margin-left: 20px;">
+      <div class="row w-100 gx-5">
+
+        <!-- Left Info Section with bright background -->
+        <div class="col-lg-5 col-md-6 d-none d-md-flex flex-column justify-content-center rounded-5"
+             style="background: rgba(255, 255, 255, 0.85); padding: 20px; border-radius: 15px; box-shadow: 0 0 15px rgba(0,0,0,0.25); height: 600px; margin-top: 30px; " >
+          <h2 class="mb-4 fw-bold text-success">
+            Why Register with <br> <span class="text-warning">AgritradeHub?</span>
+          </h2>
+          <ul class="list-unstyled fs-5" style="line-height: 1.8; color: #1a5d1a;">
+            <li class="mb-3 d-flex align-items-start">
+              <i class="bi bi-check-circle-fill text-success me-3" style="font-size: 1.8rem;"></i>
+              <span>Connect directly with buyers and sellers for fair pricing.</span>
+            </li>
+            <li class="mb-3 d-flex align-items-start">
+              <i class="bi bi-check-circle-fill text-success me-3" style="font-size: 1.8rem;"></i>
+              <span>Get real-time market updates and crop pricing intelligence.</span>
+            </li>
+  
+            <li class="mb-3 d-flex align-items-start">
+              <i class="bi bi-check-circle-fill text-success me-3" style="font-size: 1.8rem;"></i>
+              <span>Participate in contract farming & supply chain solutions.</span>
+            </li>
+            <li class="d-flex align-items-start">
+              <i class="bi bi-check-circle-fill text-success me-3" style="font-size: 1.8rem;"></i>
+              <span>Enjoy 24/7 support & access training programs.</span>
+            </li>
+          </ul>
+          <div class="mt-auto pt-4 bg-light p-3 rounded shadow-sm border border-success">
+  <div class="d-flex align-items-center">
+    <i class="bi bi-people-fill text-success fs-2 me-3"></i>
+    <div>
+      <p class="mb-1 fw-semibold" style="color: #1a5d1a; font-size: 1.1rem;">
+        Join a thriving community of over <span class="text-success">50,000+</span> farmers and merchants!
+      </p>
+      <small class="fst-italic text-muted">
+        Collaborate, learn, and grow your agricultural business with us.
+      </small>
+    </div>
+  </div>
+</div>
+        </div>
+
+<!-- Right Form Section -->
+<div class="col-lg-7 col-md-6 col-sm-12">
+  <div class="card shadow-lg border-0 rounded-4" style="min-height: 700px; width:800px; margin-left: 25;">
+    <!-- Header -->
+    <div class="card-header bg-success text-white text-center rounded-top-4 py-4">
+      <h3 class="fw-bold mb-0">
+        <i class="bi bi-person-plus-fill me-2"></i> Merchant Registration
+      </h3>
+      <small>Fill in your details below</small>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4 overflow-auto">
+      <form method="post" th:object="${merchant}" class="needs-validation" novalidate>
+
+        <!-- Row 1: Full Name & Mobile -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label for="name" class="form-label fw-bold">
+              <i class="bi bi-person-fill me-1 text-success"></i> Full Name
+            </label>
+            <input id="name" th:field="${merchant.name}" type="text" class="form-control rounded-3" placeholder="Enter your name" required>
+            <div class="invalid-feedback">Full name is required.</div>
+          </div>
+          <div class="col-md-6">
+            <label for="mobile" class="form-label fw-bold">
+              <i class="bi bi-phone-fill me-1 text-success"></i> Mobile Number
+            </label>
+            <input id="mobile" th:field="${merchant.contactNumber}" type="tel" class="form-control rounded-3" placeholder="Enter mobile number" pattern="[0-9]{10}" required>
+            <div class="invalid-feedback">Valid 10-digit mobile number is required.</div>
+          </div>
+        </div>
+
+        <!-- Row 2: Email & Aadhar -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label for="email" class="form-label fw-bold">
+              <i class="bi bi-envelope-fill me-1 text-success"></i> Email
+            </label>
+            <input id="email" th:field="${merchant.email}" type="email" class="form-control rounded-3" placeholder="Enter your email" required>
+            <div class="invalid-feedback">Valid email is required.</div>
+          </div>
+          <div class="col-md-6">
+            <label for="aadhar" class="form-label fw-bold">
+              <i class="bi bi-credit-card-2-front-fill me-1 text-success"></i> Aadhar Number
+            </label>
+            <input id="aadhar" th:field="${merchant.aadharNumber}" type="text" maxlength="12" class="form-control rounded-3" placeholder="Enter Aadhar Number" pattern="\d{12}" required>
+            <div class="invalid-feedback">12-digit Aadhar number is required.</div>
+          </div>
+        </div>
+
+        <!-- Row 3: PAN & Password -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label for="pan" class="form-label fw-bold">
+              <i class="bi bi-credit-card-2-back-fill me-1 text-success"></i> PAN Number
+            </label>
+            <input id="pan" th:field="${merchant.pancardNumber}" type="text" maxlength="10" class="form-control rounded-3" placeholder="Enter PAN Number" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" required>
+            <div class="invalid-feedback">Valid PAN number is required.</div>
+          </div>
+          <div class="col-md-6">
+            <label for="password" class="form-label fw-bold">
+              <i class="bi bi-lock-fill me-1 text-success"></i> Password
+            </label>
+            <input id="password" th:field="${merchant.password}" type="password" class="form-control rounded-3" placeholder="Enter password" required minlength="6">
+            <div class="invalid-feedback">Password must be at least 6 characters.</div>
+          </div>
+        </div>
+
+        <!-- Row 4: Full width Address -->
+        <div class="mb-4">
+          <label for="address" class="form-label fw-bold">
+            <i class="bi bi-geo-alt-fill me-1 text-success"></i> Address
+          </label>
+          <textarea id="address" th:field="${merchant.address}" rows="3" class="form-control rounded-3" placeholder="Enter your address" required></textarea>
+          <div class="invalid-feedback">Address is required.</div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-success px-5 rounded-3 fw-bold shadow-sm">
+            <i class="bi bi-check-circle-fill me-2"></i> Register
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Client-side validation script -->
+  <script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
+</main>
+
+
+</body>
+</html>
+

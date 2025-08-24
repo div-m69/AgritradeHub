@@ -1,0 +1,60 @@
+<html th:replace="~{Admin/Adminbase::layout(~{::main})}">
+<body>
+   <main>
+       <div class="row">
+       <div class="col-sm-7 mx-auto">
+       <div class="card">
+       <div class="card-header bg-success">
+       <h4 class="text-center text-white fw-bold m-0"> Add</h4>
+       </div>
+       <div class="card-body">
+          <form method="post">
+           <div class="my-3 w-75 mx-auto">
+              <lable class="fw-bold">Enter category name</lable>
+              <input type="text" class="form-control" name="categoryName" required placeholder="categoryname">
+           </div>
+           <div class="text-center pt-4">
+            <button type="submit" class="btn btn-success btn-sm">Add category</button>
+           </div>
+          </form>
+       </div>
+       </div>
+       </div>
+       </div>
+       
+       <div class="row">
+         <div class="col-sm-9 mx-auto">
+          <div class="card"> 
+           <div class="card-header bg-success">
+                       <h5 class="text-center text-white fw-bold m-0"> Manage Category</h5>
+                     </div>
+           <div class="card-body">
+                       <div class="table-responsive">
+                          <table class="table table-bordered">
+                           <thead>
+                             <tr>
+                                <th>Sr. No.</th>      
+                                <th>Category Name</th>
+                                <th>Action</th>
+                              </tr>
+                           </thead>
+                              <tbody>
+                                 <tr th:each="cate, srno :${categories}">
+                                    <td th:text="${srno.index + 1}" style="padding: 4px 10px !important;">abs</td>
+                                    <td th:text="${cate.categoryName}" style="padding: 4px 10px !important;">425</td>
+                                    <td class="text-center" style="padding: 4px 10px !important;"> 
+                                       <a th:href="@{DeleteCategory(id=${cate.id})}" onclick= "return confirm('Are you sure You Want Delete?')" class="btn btn-danger">Delete </a>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                          </table>
+                       </div>
+                     </div>
+          </div>
+         </div>
+       </div>
+ 
+       
+   </main>
+</body>
+</html>

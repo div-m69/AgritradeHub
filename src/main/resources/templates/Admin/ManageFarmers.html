@@ -1,0 +1,54 @@
+<html th:replace="~{Admin/Adminbase::layout(~{::main})}">
+     <body>
+     <main>
+          
+          <div class="row"> 
+               <div class="col-sm-12"> 
+                 <div class="card"> 
+                     <div class="card-header bg-success">
+                       <h4 class="text-center text-white fw-bold m-0">Manage Farmer</h4>
+                     </div>
+                     <div class="card-body">
+                       <div class="table-responsive">
+                          <table class="table table-bordered" id="example">
+                           <thead>
+                             <tr>
+                                <th>Sr. No.</th>
+                                <th>Profile Pic</th>
+                                <th>Name</th>
+                                <th>Contact No</th>
+                                <th>Email</th>
+                                <th>Aaadhar no</th>
+                                <th>Pan Card</th>
+                                <th>Address</th>
+                                <th>Reg Date</th>
+                                <th>Status</th>
+                             </tr>
+                           </thead>
+                           <tbody>
+                              <tr th:each="user, srno : ${farmerList}">
+                                  <td class="text-center" th:text="${srno.index + 1}"> </td>
+                                  <td>null</td>
+                                  <td th:text="${user.name}"> </td>
+                                  <td th:text="${user.contactNumber}"> </td>
+                                  <td th:text="${user.email}"> </td>
+                                   <td th:text="${user.aadharNumber}"> </td>
+                                  <td th:text="${user.pancardNumber}"> </td>
+                                  <td th:text="${user.address}"> </td>
+                                  <td th:text="${user.regDate}"> </td>
+                                  <td> 
+                                     <a th:if="${user.status.name() == 'PENDING'}" th:href="@{UpdateUserStatus(id = ${user.id})}" class ="btn btn-warning btn-sm" th:text="${user.status}"></a>
+                                     <a th:if="${user.status.name() == 'VERIFIED'}" th:href="@{UpdateUserStatus(id = ${user.id})}" class ="btn btn-success btn-sm" th:text="${user.status}"></a>
+                                     <a th:if="${user.status.name() == 'DISABLED'}" th:href="@{UpdateUserStatus(id = ${user.id})}" class ="btn btn-danger btn-sm" th:text="${user.status}"></a>
+                                  </td>
+                              </tr>
+                           </tbody>
+                          </table>
+                       </div>
+                     </div>
+            </div> 
+          </div>
+          </div>
+          </main>
+     </body>
+</html>

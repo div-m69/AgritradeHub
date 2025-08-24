@@ -1,0 +1,50 @@
+<html th:replace="~{Admin/Adminbase::layout(~{::main})}">
+     <body>
+     <main>
+          
+          <div class="row"> 
+               <div class="col-sm-12"> 
+                 <div class="card"> 
+                     <div class="card-header bg-success">
+                       <h4 class="text-center text-white fw-bold m-0">View Orders</h4>
+                     </div>
+                     <div class="card-body">
+                       <div class="table-responsive">
+                          <table class="table table-bordered" id="example">
+                           <thead>
+                             <tr>
+                                <th>Sr. No.</th>      
+                                <th>Merchant Name</th>
+                                <th>Merchant Number</th>
+                                <th>Farmer Name</th>
+                                <th>Farmer Number</th> 
+                                <th>Product Name</th> 
+                                <th>Price/Unit</th>
+                                <th>Quantity</th>
+                                <th>Payment ID</th>
+                               
+                             </tr>
+                           </thead>
+                           <tbody>
+                              <tr th:each="pay, srno : ${payList}">
+                              <td th:text="${srno.index + 1}"></td>
+                              <td th:text="${pay.order.merchant.name}"></td>
+                              <td th:text="${pay.order.merchant.contactNumber}"></td>
+                              <td th:text="${pay.order.farmer.name}"></td>
+                              <td th:text="${pay.order.farmer.contactNumber}"></td>
+                              <td th:text="${pay.order.productName}"></td>
+                              <td th:text="${pay.order.pricePerUnit}"></td>
+                              <td th:text="${pay.order.quantity}"></td>
+                              <td th:text="${pay.payId}"></td>
+                              </tr>
+
+                           </tbody> 
+                          </table>
+                       </div>
+                     </div>
+            </div> 
+          </div>
+          </div>
+          </main>
+     </body>
+</html>

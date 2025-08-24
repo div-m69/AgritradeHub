@@ -1,0 +1,70 @@
+<html th:replace="~{Farmer/Farmerbase::layout(~{::main})}">
+  <body>
+     <main>
+          <div class="row">
+              <div class="col-sm-11 mx-auto">
+                  <div class="card p-3 pt-4">
+                       <div class="row px-3">
+                        <div class="col-sm-6 pt-4">
+                           <h5 class="m-0">Welcome <span th:text="${farmer.name}" class="text-primary"></span> </h5>
+                           <p>View and Manage Your Profile Here!!</p>
+                        </div>
+                         <div class="col-sm-6 text-right">
+                          <img class="rounded-circle" alt="image not found" th:src="@{'/ProfilePicture/' + ${farmer.profilePic}}" th:if="${farmer.profilePic != null}" style="width: 60px; height: 60px;">
+                          <img alt="Not Found" src="../img/user_img.jpg" th:if ="${farmer.profilePic == null}"  style="width: 60px;">
+                          <p th:text="${farmer.contactNumber}" class="m-0"></p>
+                          <p th:text="${farmer.email}" class="m-0"></p>
+                         </div>
+                       </div>
+                  </div>
+              </div>
+              
+              <div class="col-sm-11 mx-auto">
+                 <div class="card p-3">
+                     <div class="row">
+                        <div class="col-sm-4 text-center p-3">
+                          <img alt="image not found" th:src="@{'/ProfilePicture/' + ${farmer.profilePic}}" th:if="${farmer.profilePic != null}" style="width: 200px; height: 200px;">
+                          <img alt="Not Found" src="../img/user_img.jpg" th:if ="${farmer.profilePic == null}"  style="width: 200px;">
+                          <div>
+                              <form method="post" enctype="multipart/form-data">
+                                 <div class="d-flex pt-4">
+                                   <input name="ImageFile" type="file" class="form-comtrol w-5" required accept="png, jpg">
+                                   <button class="btn btn-success mx-2 w-50">Upload Pic</button>
+                                 </div>
+                 
+                              </form>
+                          </div>
+                        </div>
+                        <div class="col-sm-7">
+                          <h6 class="text-center pt-3">Your Personal Data</h6>
+                          <table class="table table-bordered w-75 mx-auto mt-3">
+                              <tr>
+                                <th>Name : </th>
+                                <td th:text="${farmer.name}"></td>
+                              </tr>
+                              <tr>
+                                <th>ContactNo : </th>
+                                <td th:text="${farmer.contactNumber}"></td>
+                              </tr>
+                              <tr>
+                                <th>Aadhar Number : </th>
+                                <td th:text="${farmer.aadharNumber}"></td>
+                              </tr>
+                              <tr>
+                                <th>PanCard Number : </th>
+                                <td th:text="${farmer.pancardNumber}"></td>
+                              </tr>
+                              <tr>
+                                <th>Address : </th>
+                                <td th:text="${farmer.address}"></td>
+                              </tr>
+                          </table>
+                        </div>
+                     </div>
+                 </div>
+              </div>
+              
+          </div>
+     </main>
+  </body>
+</html>

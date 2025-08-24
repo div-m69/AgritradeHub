@@ -1,0 +1,59 @@
+<html th:replace="~{Farmer/Farmerbase::layout(~{::main})}">
+ <body>
+    <main>
+      <div class="row">
+        <div class="col-sm-12">
+            <div class="card px-4">
+            <div class="card-header bg-success">
+                <div class="row">
+                <div class="col-sm-6">
+                   <h4 class="text-white m-0 fw-bold ">manage product</h4>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <a href="AddProduct" class="btn btn-danger btm-sm">
+                  <i class="la la-plus-circle"></i>
+                  Add product
+                  </a>
+                </div>
+                </div>
+            </div>
+            <div class="card-body">
+               <div class="table-responsive">
+               <table class="table table-bordered" id="example">
+                   <thead>
+                        <tr>
+                          <th>sr.no</th>
+                          <th> Product Name</th>
+                          <th> Product Image</th>
+                          <th>Quantity</th>
+                          <th> price/unit</th>
+                          <th>categort</th>
+                          <th>Availbility</th>
+                          <th> Action</th>
+                        </tr>
+                   </thead>
+                     <tbody>
+                       <tr th:each="product, srno : ${productsList}">
+                          <td class="text-center" th:text="${srno.index+1}"></td>
+                          <td th:text="${product.productName}"></td>
+                          <td class="text-center">
+                          <img alt="not found" th:src="@{'/ProductImage/' + ${product.productImage}}" width="60px" height="60px" class="border p-1">
+                          </td>
+                          <td th:text="${product.quantity}" ></td>
+                          <td th:text="${product.pricePerUnit + ' Rs.'}"></td>
+                          <td th:text="${product.category}"></td>
+                          <td th:text="${product.status}" class="fw-bold" th:classappend="${product.status.name()== 'AVAILABLE'} ? 'text-primary' : 'text-danger'"></td>
+                          <td>
+                            <a th:href="@{UpdateProduct(id=${product.id})}" class="btn btn-primary btn-sm">Update</a>
+                          </td>
+                       </tr>
+                     </tbody>
+               </table>
+               </div>
+            </div>
+            </div>
+        </div>
+      </div>
+    </main>
+ </body>
+</html>>

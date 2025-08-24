@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" th:fragment="layout(content)">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>Former Zone - Agritrade Hub</title>
+<meta
+	content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+	name='viewport' />
+<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+<!--Data Table CSS  -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.3/css/dataTables.bootstrap5.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/ready.css">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../assets/js/core/jquery.3.2.1.min.js"></script>
+
+<style type="text/css">
+	td, th{
+ 		white-space: nowrap !important;
+ 	}
+</style>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="main-header">
+			<div class="logo-header text-center">
+				<a href="dashboard" class="logo"> Agritrade Hub </a>
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button"
+					data-toggle="collapse" data-target="collapse"
+					aria-controls="sidebar" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<button class="topbar-toggler more">
+					<i class="la la-ellipsis-v"></i>
+				</button>
+			</div>
+			<nav class="navbar navbar-header navbar-expand-lg">
+				<div class="container-fluid">
+
+					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+						
+						<li class="nav-item dropdown hidden-caret"><a
+							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+							role="button" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false"> <i class="la la-bell"></i> <span
+								class="notification" th:text="${pendingOrderCount}">4</span>
+						</a>
+							<ul class="dropdown-menu notif-box"
+								aria-labelledby="navbarDropdown">
+								<li>
+									<div class="dropdown-title">You have <span th:text="${pendingOrderCount}"></span> new notification</div>
+								</li>
+								<li>
+									<div class="notif-center">
+												<!-- <span th:text="${order.productName} + ' (' + ${order.quantity} + ')'"></span> -->
+										<a href="#" th:each="order : ${pendingOrders}">
+											<div class="notif-img">
+												<img th:src="${order.farmer.profilePic != null} ? @{'/profilePic/'+ ${order.farmer.profilePic}} : @{../img/user_img.jpg}" alt="Img Profile">
+											</div>
+											<div class="notif-content">
+												<span class="block" th:text="${order.merchant.name} + ' is ordred '+${order.productName} + ' (' + ${order.quantity} + 'kg)'"> Reza send messages to you </span> 
+												<span class="time" th:attr="data-time=${order.orderDate}">Just now</span>
+											</div>
+										</a> 
+										<div th:if="${#lists.isEmpty(pendingOrders)}">
+        									<a class="dropdown-item">No orders notifications</a>
+    									</div>
+										
+									</div>
+								</li>
+								<li><a class="see-all" href="Orders"> <strong>See
+											all Order</strong> <i class="la la-angle-right"></i>
+								</a></li>
+							</ul></li>
+						<li class="nav-item dropdown">
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> 
+							<img th:src="${session.loggedInFarmer.profilePic != null} ? @{'/ProfilePicture/'+ ${session.loggedInFarmer.profilePic}} : @{../img/user_img.jpg}" alt="user-img border border-danger" width="35" class="img-circle">
+							<span th:text="${session.loggedInFarmer.name}"></span>
+						</a>
+							<ul class="dropdown-menu dropdown-user">
+								<li>
+									<div class="user-box">
+										<div class="u-img">
+											<img alt="user" th:src="${session.loggedInFarmer.profilePic != null} ? @{'/ProfilePicture/'+ ${session.loggedInFarmer.profilePic}} : @{../img/user_img.jpg}" />
+										</div>
+										<div class="u-text">
+											<h4 th:text="${session.loggedInFarmer.name}"></h4>
+											<p class="text-muted" th:text="${session.loggedInFarmer.email}">example@gmail.com</p>
+											<a href="UserProfile" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
+										</div>
+									</div>
+								</li>
+								<!-- <div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="EditProfile">
+									<i class="ti-user"></i> 
+									Edit Profile
+								</a> -->
+								
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="ChangePassword">
+									<i class="ti-settings"></i>
+									Change Password
+								</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="Logout">
+									<i class="fa fa-power-off"></i> 
+									Logout
+								</a>
+							</ul> <!-- /.dropdown-user --></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div class="sidebar">
+			<div class="scrollbar-inner sidebar-wrapper">
+				<ul class="nav">
+					<li class="nav-item" th:classappend="${active1}">
+					 	<a href="Dashboard"> 
+							<i class="la la-dashboard"></i>
+							<p>Dashboard</p> 
+							<span class="badge badge-count"></span>
+						</a>
+					</li>
+					<li class="nav-item" th:classappend="${active2}">
+						<a href="AddProduct"> 
+							<i class="la la-fonticons"></i>
+							<p>Add Products</p>
+						</a>
+					</li>
+					
+					<li class="nav-item" th:classappend="${active3}">
+						<a href="ManageProduct"> 
+							<i class="la la-fonticons"></i>
+							<p>Manage Products</p>
+						</a>
+					</li>
+					
+					<li class="nav-item" th:classappend="${active4}">
+						<a href="ManageOrders"> 
+							<i class="la la-fonticons"></i>
+							<p>View Orders</p>
+						</a>
+					</li>
+					
+					<li class="nav-item" th:classappend="${active6}">
+						<a href="UserProfile"> 
+							<i class="la la-bullhorn"></i>
+							<p>View & Update Profile</p> 
+							<!-- <span class="badge badge-success">3</span> -->
+						</a>
+					</li>
+					
+					<!-- <li class="nav-item update-pro">
+						<button data-toggle="modal" data-target="#modalUpdate">
+							<i class="la la-hand-pointer-o"></i>
+							<p>Update To Pro</p>
+						</button>
+					</li> -->
+					<li class="nav-item py-4">
+						&nbsp;
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="main-panel">
+			<div class="content" >
+				<div th:replace="${content}"></div>
+			</div>
+			<footer class="footer">
+				<div class="container-fluid">
+					<nav class="pull-left">
+						<ul class="nav">
+							<li class="nav-item">
+								<a class="nav-link" href="#"> Agritrade Hub </a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#"> Help </a></li>
+							<li class="nav-item">
+								<a class="nav-link" href="#"> Licenses </a>
+							</li>
+						</ul>
+					</nav>
+					<div class="copyright ml-auto">
+						2018, made with 
+						<i class="la la-heart heart text-danger"></i> by 
+						<a href="#">Agritrade Hub</a>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+	
+	
+	<!-- Modal -->
+	<div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog"
+		aria-labelledby="modalUpdatePro" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header bg-primary">
+					<h6 class="modal-title">
+						<i class="la la-frown-o"></i> Under Development
+					</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body text-center">
+					<p>
+						Currently the pro version of the <b>Ready Dashboard</b> Bootstrap
+						is in progress development
+					</p>
+					<p>
+						<b>We'll let you know when it's done</b>
+					</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<input type="hidden" id="msg" th:if="${msg}" th:value="${msg}">
+	<script type="text/javascript">
+	  var msg = document.getElementById("msg");
+	  if(msg.value != "")
+		  {
+		   alert(msg.value);
+		  }
+	</script>
+	
+<script src="../assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="../assets/js/core/popper.min.js"></script>
+<script src="../assets/js/core/bootstrap.min.js"></script>
+<script src="../assets/js/plugin/chartist/chartist.min.js"></script>
+<script src="../assets/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
+
+<!-- <script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+ -->
+<script src="../assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+<script src="../assets/js/plugin/jquery-mapael/jquery.mapael.min.js"></script>
+<script src="../assets/js/plugin/jquery-mapael/maps/world_countries.min.js"></script>
+<script src="../assets/js/plugin/chart-circle/circles.min.js"></script>
+<script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="../assets/js/ready.min.js"></script>
+
+
+<!-- Data table js -->
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.flash.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+	
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Check if DataTable is already initialized
+        if (!$.fn.DataTable.isDataTable('#example')) {
+            var table = $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pageLength'
+                ],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    ['10', '25', '50', '100', 'All']
+                ]
+            });
+
+            // Status Filter Dropdown
+            $('#statusFilter').on('change', function () {
+                var selected = this.value;
+                // Change 6 to the correct column index where Order Status appears (0-based)
+                table.column(6).search(selected).draw();
+            });
+        }
+    });
+</script>
+
+
+
+<!-- Modal for displaying the current image from table-->
+<div class="modal fade" style="left: 50; top: 40;" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width: 80%;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Profile Picture</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img id="modalImage" src="" class="img-fluid" alt="Profile Image">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- JavaScript to open the modal and set the image -->
+	<script>
+	  // Select all profile images with the class 'profile-img'
+	  var profileImages = document.querySelectorAll('.profile-img'); 
+
+	  // Modal elements
+	  var modalImage = document.getElementById('modalImage');
+	  var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+
+	  // Ensure that profileImages is not empty
+	  if (profileImages.length > 0) {
+	    profileImages.forEach(function(profileImage) {
+	      // Add click event to each profile image
+	      profileImage.addEventListener('click', function() {
+	        var imgSrc = profileImage.getAttribute('src'); // Get the source of the clicked image
+	        modalImage.setAttribute('src', imgSrc); // Set the source of the image in the modal
+	        imageModal.show(); // Show the modal manually
+	      });
+	    });
+	  } else {
+	    console.error('No profile images found.');
+	  }
+
+	</script>
+	<script>
+    function timeAgo(dateStr) {
+        const now = new Date();
+        const date = new Date(dateStr);
+        const seconds = Math.floor((now - date) / 1000);
+
+        if (seconds < 60) return 'just now';
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return minutes + ' minute' + (minutes > 1 ? 's' : '') + ' ago';
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return hours + ' hour' + (hours > 1 ? 's' : '') + ' ago';
+        const days = Math.floor(hours / 24);
+        return days + ' day' + (days > 1 ? 's' : '') + ' ago';
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.time').forEach(function (el) {
+            const rawTime = el.getAttribute('data-time');
+            if (rawTime) {
+                el.textContent = timeAgo(rawTime);
+            }
+        });
+    });
+</script>
+	
+</body>
+
+</html>

@@ -1,0 +1,208 @@
+<html th:replace="~{Merchant/Merchantbase::layout(~{::main})}">
+  <body class="bg-light">
+    <main>
+      <div class="row m-0" style="height: 70vh; margin-top: -10px !important;">
+		  <!-- ✅ Sidebar (desktop always visible) -->
+        <div id="sidebar" class="col-md-2 d-none d-md-block bg-white shadow-sm p-3 vh-100 sidebar-scroll">
+          <h6 class="fw-bold text-center text-success mb-3">
+            <i class="bi bi-funnel-fill me-2"></i>Categories
+          </h6>
+          <ul class="list-group list-group-flush">
+            <!-- All Products -->
+            <li class="list-group-item border-0 p-1" 
+                th:classappend="${selectedCategory == null} ? 'active bg-success text-white rounded' : ''">
+              <a th:href="@{Dashboard}" 
+                 class="d-block text-decoration-none px-2"
+                 th:classappend="${selectedCategory==null} ? 'text-white' : 'text-dark'">
+                <i class="bi bi-box-seam me-2"></i>All Products
+              </a>
+            </li>
+
+            <!-- Dynamic Categories -->
+            <li class="list-group-item border-0 p-1" 
+                th:each="cate : ${categories}" 
+                th:classappend="${selectedCategory == cate.categoryName} ? 'active bg-success text-white rounded' : ''">
+              <a th:href="@{Dashboard(category=${cate.categoryName})}" 
+                 class="d-block text-decoration-none px-2"
+                 th:classappend="${selectedCategory == cate.categoryName} ? 'text-white' : 'text-dark'" 
+                 th:text="${cate.categoryName}">
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- ✅ Mobile Sidebar (hidden by default) -->
+        <div id="mobileSidebar" class="custom-sidebar bg-white shadow-sm p-3">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold text-success m-0">
+              <i class="bi bi-funnel-fill me-2"></i>Categories
+            </h6>
+            <button class="btn btn-sm btn-outline-danger" id="closeSidebarBtn">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+          <ul class="list-group list-group-flush">
+            <!-- All Products -->
+            <li class="list-group-item border-0 p-1" 
+                th:classappend="${selectedCategory == null} ? 'active bg-success text-white rounded' : ''">
+              <a th:href="@{Dashboard}" 
+                 class="d-block text-decoration-none px-2"
+                 th:classappend="${selectedCategory==null} ? 'text-white' : 'text-dark'">
+                <i class="bi bi-box-seam me-2"></i>All Products
+              </a>
+            </li>
+
+            <!-- Dynamic Categories -->
+            <li class="list-group-item border-0 p-1" 
+                th:each="cate : ${categories}" 
+                th:classappend="${selectedCategory == cate.categoryName} ? 'active bg-success text-white rounded' : ''">
+              <a th:href="@{Dashboard(category=${cate.categoryName})}" 
+                 class="d-block text-decoration-none px-2"
+                 th:classappend="${selectedCategory == cate.categoryName} ? 'text-white' : 'text-dark'" 
+                 th:text="${cate.categoryName}">
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Toggle button (mobile only) -->
+        <div class="d-md-none">
+          <button class="btn btn-success m-2" id="openSidebarBtn">
+            <i class="bi bi-list"></i> Categories
+          </button>
+        </div>
+
+
+        <!-- Main Content -->
+        <div class="col-md-10 p-3 sidebar-scroll" style="height: 74vh;">
+          <h5 class="fw-bold mb-3 text-dark">
+            <i class="bi bi-shop-window me-2 text-success"></i> Available Products
+          </h5>
+
+          <!-- Product Cards -->
+          <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6" th:each="product : ${productsList}">
+              <div class="card shadow-sm border-0 rounded-3 hover-card mb-3">
+                <img th:src="@{'/ProductImage/' + ${product.productImage}}" 
+                     class="card-img-top p-2 rounded-3" 
+                     alt="Product Image" style="height:180px; object-fit:cover;">
+
+                <div class="card-body p-3">
+                  <h6 class="card-title text-dark fw-bold mb-2" 
+                      th:text="${product.productName}">Product Name</h6>
+
+                  <p class="mb-1 small">
+                    <i class="bi bi-currency-rupee text-success"></i> 
+                    <span th:text="${product.pricePerUnit + ' Rs.'}" class="fw-bold text-danger"></span>
+                  </p>
+
+                  <p class="mb-1 small text-secondary">
+                    <i class="bi bi-boxes me-1"></i> 
+                    <span th:text="${product.quantity}" class="fw-bold text-primary"></span> <span th:text="${product.status}" class="fw-bold" th:classappend="${product.status.name()=='AVAILABLE'}? 'text-success' : 'text-danger' "></span>
+                  </p>
+
+                  <p class="mb-2 small">
+                    <i class="bi bi-person-badge me-1"></i> 
+                    <span th:text="${product.farmer.name}" class="fw-bold text-dark"></span>
+                  </p>
+
+                  <a th:href="@{BuyProduct(id = ${product.id})}" class="btn btn-sm btn-success w-100 rounded-pill">
+                    <i class="bi bi-cart-fill me-1"></i> Buy Product
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- No Product Message -->
+          <div class="row mt-4" th:if="${productsList.size() == 0}">
+            <div class="col-sm-11 mx-auto bg-white p-4 text-center shadow-sm rounded">
+              <i class="bi bi-exclamation-circle text-danger fs-3"></i>
+              <h6 class="mt-2 text-secondary">
+                No products available under 
+                <span th:text="${selectedCategory}" class="fw-bold text-dark"></span> category.
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        /* Product hover effect */
+        .hover-card:hover {
+          transform: translateY(-4px);
+          transition: all 0.2s ease-in-out;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar scroll with thin scrollbar */
+        .sidebar-scroll {
+          overflow-y: auto;
+        }
+        .sidebar-scroll::-webkit-scrollbar {
+          width: 6px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+          background: #6c757d;
+          border-radius: 10px;
+        }
+
+         /* Custom Sidebar (Mobile Only) */
+        .custom-sidebar {
+          position: fixed;
+          top: 0;
+          left: -260px; /* hidden */
+          width: 250px;
+          height: 100%;
+          transition: left 0.3s ease;
+          z-index: 1050;
+          overflow-y: auto;
+        }
+        .custom-sidebar.active {
+          left: 0;
+        }
+
+        /* Background overlay */
+        .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.4);
+          z-index: 1040;
+          display: none;
+        }
+        .overlay.active {
+          display: block;
+        }
+      </style>
+
+      <script>
+        const sidebar = document.getElementById("mobileSidebar");
+        const openBtn = document.getElementById("openSidebarBtn");
+        const closeBtn = document.getElementById("closeSidebarBtn");
+
+        // Open sidebar
+        openBtn.addEventListener("click", function (e) {
+          e.stopPropagation(); // prevent body click close
+          sidebar.classList.add("active");
+        });
+
+        // Close sidebar
+        closeBtn.addEventListener("click", function () {
+          sidebar.classList.remove("active");
+        });
+
+        // Close when clicking outside sidebar
+        document.addEventListener("click", function (e) {
+          if (sidebar.classList.contains("active") &&
+              !sidebar.contains(e.target) &&
+              e.target !== openBtn) {
+            sidebar.classList.remove("active");
+          }
+        });
+      </script>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+<html th:replace="~{Farmer/Farmerbase::layout(~{::main})}">
+<body>
+<main>
+  <div class="row">
+    <div class="col-sm-8 mx-auto">
+      <div class="card shadow">
+        <!-- Header -->
+        <div class="card-header bg-success">
+          <h4 class="text-center text-white m-0">
+            Update <span th:text="${product.productName}" class="text-warning"></span> Product
+          </h4>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+          <!-- Form -->
+          <form th:object="${product}" method="post">
+
+           
+            
+
+            <!-- Product Name -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Product Name</label>
+              <input type="text" th:field="*{productName}" class="form-control" readonly />
+            </div>
+
+            <!-- Availability Status -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Availability</label>
+              <p class="m-0">
+                <span th:text="${product.status.name()}"
+                      th:classappend="${product.status.name() == 'AVAILABLE' ? 'text-success fw-bold' : 'text-danger fw-bold'}">
+                </span>
+              </p>
+            </div>
+
+            <!-- Quantity -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Available Quantity (Update Stock)</label>
+              <input type="number" th:field="*{quantity}" class="form-control" placeholder="Update Quantity" min="50" required />
+            </div>
+
+            <!-- Price -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Price per Unit (Rs.)</label>
+              <input type="number" th:field="*{pricePerUnit}" class="form-control" placeholder="Enter Price" min="1" required />
+              
+              
+             <input type="hidden" name="productId" th:value="${product.id}" />
+            </div>
+
+            <!-- Buttons -->
+            <div class="text-center mt-4">
+              <a href="ManageProduct" class="btn btn-secondary mx-2 btn-sm">Back</a>
+               <button type="submit" class="btn btn-success  mx-2 btn-sm">Update Submit</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>
