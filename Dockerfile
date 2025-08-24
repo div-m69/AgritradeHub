@@ -1,32 +1,29 @@
-# Stage 1: Build the application
-FROM maven:3.9.4-eclipse-temurin-17 AS build
+# Stage 1: Build with Maven + Java 21
+FROM eclipse-temurin:21-jdk AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy pom.xml and download dependencies (cache layer)
-COPY pom.xml .
-COPY .mvn .mvn
+# Copy Maven wrapper and pom.xml first (to leverage Docker cache)
 COPY mvnw .
-COPY mvnw.cmd .
+COPY .mvn .mvn
+COPY pom.xml .
 
-RUN ./mvnw dependency:go-offline
+# Install dependencies (without tests)
+RUN ./mvnw dependency:go-offline -B
 
-# Copy source code and build
+# Copy the rest of the source code
 COPY src src
+
+# Build the application (skip tests for faster build)
 RUN ./mvnw clean package -DskipTests
 
 # Stage 2: Run the application
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 
-# Set working directory
 WORKDIR /app
 
 # Copy jar from build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose port 8080
-EXPOSE 8080
-
-# Run the application
+# Run the jar file
 ENTRYPOINT ["java", "-jar", "app.jar"]
