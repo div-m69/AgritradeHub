@@ -259,7 +259,7 @@ public class MerchantController {
 			
 			if (newPassword.equals(merchant.getPassword())) {
 				attributes.addFlashAttribute("msg", "Can't Change New and Old Password Are same!!");
-				return "redirect:/Merchant/ChangePassword";
+				return "redirect:/Merchant/ChangePassword"; 
 			}
 			
 			if (oldPassword.equals(merchant.getPassword())) {
